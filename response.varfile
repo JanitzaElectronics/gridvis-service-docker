@@ -1,0 +1,6 @@
+sys.languageId=en
+sys.adminRights$Boolean=true
+sys.installationDir=/usr/local/GridVisHub
+maxHeapSize$Integer=512
+serverDataDir=/opt/GridVisHubData
+PORT$Long=8080
