@@ -21,6 +21,7 @@ ENV USER_LANG en
 ENV FEATURE_TOGGLES NONE
 ENV LANG=en_US.UTF-8
 ENV HUB_PARAMS NONE
+ENV MAX_RAM_SIZE_MB 512
 
 VOLUME ["/opt/GridVisHubData", "/opt/GridVisProjects"]
 COPY gridvis-hub.sh /gridvis-hub.sh
