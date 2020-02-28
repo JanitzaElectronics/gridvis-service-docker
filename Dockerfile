@@ -1,15 +1,21 @@
-FROM ubuntu:18.04
+FROM --platform=$BUILDPLATFORM ubuntu:18.04 AS build
 
 ENV HOME /root
-ENV VERSION 7.4.62
+ENV VERSION 7.4.63
 
 COPY response.varfile /response.varfile
 
-RUN useradd -r gridvis -u 101 && apt-get update && apt-get install -y openjdk-8-jre ttf-ubuntu-font-family wget gzip bash && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y openjdk-8-jre ttf-ubuntu-font-family wget gzip bash && rm -rf /var/lib/apt/lists/*
 RUN wget -q -O hub.sh http://gridvis.janitza.de/download/${VERSION}/GridVis-Hub-${VERSION}-unix.sh \
     && sh hub.sh -q -varfile /response.varfile \
     && echo "Installer finished" \
     && rm hub.sh
+
+FROM ubuntu:18.04
+
+RUN useradd -r gridvis -u 101 && apt-get update && apt-get install -y openjdk-8-jre ttf-ubuntu-font-family && rm -rf /var/lib/apt/lists/*
+COPY --from=build /usr/local/GridVisHub /usr/local/GridVisHub
+
 RUN mkdir -p /opt/GridVisHubData \
     && mkdir -p /opt/GridVisProjects \
     && ln -s /opt/GridVisHubData/security.properties /opt/security.properties \
