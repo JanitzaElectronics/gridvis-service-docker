@@ -20,7 +20,7 @@ RUN mkdir -p /opt/GridVisHubData \
     && mkdir -p /opt/GridVisProjects \
     && ln -s /opt/GridVisHubData/security.properties /opt/security.properties \
     && sed -i 's#default_userdir.*$#default_userdir=/opt/GridVisHubData#' /usr/local/GridVisHub/etc/hub.conf \
-    && chown gridvis:gridvis /opt/GridVisHubData /opt/GridVisProjects
+    && chown gridvis:gridvis /opt/GridVisHubData /opt/GridVisProjects /usr/local/GridVisHub/etc/hub.conf
 
 ENV USER_TIMEZONE UTC
 ENV USER_LANG en
