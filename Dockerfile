@@ -5,6 +5,7 @@ ENV VERSION 8.0.2
 
 COPY response.varfile /response.varfile
 RUN useradd -r gridvis -u 101 && apt update && apt -y install openjdk-8-jre fontconfig ttf-ubuntu-font-family wget gzip bash
+RUN echo Fetching https://gridvis.janitza.de/download/${VERSION}/GridVis-Service-${VERSION}-unix.sh
 RUN wget -q -O service.sh https://gridvis.janitza.de/download/${VERSION}/GridVis-Service-${VERSION}-unix.sh
 RUN sh service.sh -q -varfile /response.varfile \
 RUN sed -i 's#default_userdir.*$#default_userdir=/opt/GridVisData#' /usr/local/GridVisService/etc/server.conf
