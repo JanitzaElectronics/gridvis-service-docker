@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM ubuntu:20.04 AS build
+FROM --platform=$BUILDPLATFORM ubuntu:20.04 AS builder
 
 ENV HOME /root
 ENV VERSION 8.0.2
