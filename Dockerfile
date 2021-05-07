@@ -1,7 +1,7 @@
 FROM --platform=$BUILDPLATFORM ubuntu:20.04 AS builder
 
 ENV HOME /root
-ENV VERSION 8.0.2
+ARG VERSION=8.0.2
 
 COPY response.varfile /response.varfile
 RUN useradd -r gridvis -u 101 && apt update && apt -y install openjdk-8-jre fontconfig ttf-ubuntu-font-family wget gzip bash
