@@ -2,7 +2,7 @@ name: Docker Image CI nightly
 
 on:
   schedule:
-    - cron: "30 6 * * 1,2,3,4,5"
+    - cron: "23 8 * * 1,2,3,4,5"
 
 jobs:
   docker:
