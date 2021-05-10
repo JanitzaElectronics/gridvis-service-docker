@@ -11,7 +11,7 @@ RUN sh service.sh -q -varfile /response.varfile \
 RUN sed -i 's#default_userdir.*$#default_userdir=/opt/GridVisData#' /usr/local/GridVisService/etc/server.conf
 
 FROM ubuntu:20.04
-RUN useradd -r gridvis -u 101 && apt update && apt -y install openjdk-8-jre fontconfig ttf-ubuntu-font-family xvfb libgtk-3-0 libxss1 libgbm1 && rm -rf /var/lib/apt/lists/*
+RUN useradd -r gridvis -u 101 && apt update && apt -y install --no-install-recommends openjdk-8-jre fontconfig ttf-ubuntu-font-family xvfb libgtk-3-0 libxss1 libgbm1 && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /usr/local/GridVisService /usr/local/GridVisService
 
@@ -34,4 +34,3 @@ EXPOSE 8080
 
 USER gridvis
 CMD ["/gridvis-service.sh"]
-

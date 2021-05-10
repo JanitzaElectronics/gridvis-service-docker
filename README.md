@@ -1,2 +1,2 @@
-gridvis-hub
+GridVis Service Docker Container
 ======================
