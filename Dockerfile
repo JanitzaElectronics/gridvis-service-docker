@@ -4,14 +4,14 @@ ENV HOME /root
 ARG VERSION=8.0.64
 
 COPY response.varfile /response.varfile
-RUN useradd -r gridvis -u 101 && apt update && apt -y install openjdk-8-jre fontconfig ttf-ubuntu-font-family wget gzip bash
+RUN useradd -r gridvis -u 101 && apt update && apt -y install openjdk-11-jre fontconfig ttf-ubuntu-font-family wget gzip bash
 RUN echo Fetching https://gridvis.janitza.de/download/${VERSION}/GridVis-Service-${VERSION}-unix.sh
 RUN wget -q -O service.sh https://gridvis.janitza.de/download/${VERSION}/GridVis-Service-${VERSION}-unix.sh
 RUN sh service.sh -q -varfile /response.varfile \
 RUN sed -i 's#default_userdir.*$#default_userdir=/opt/GridVisData#' /usr/local/GridVisService/etc/server.conf
 
 FROM ubuntu:20.04
-RUN useradd -r gridvis -u 101 && apt update && apt -y install --no-install-recommends openjdk-8-jre fontconfig ttf-ubuntu-font-family xvfb libgtk-3-0 libxss1 libgbm1 && rm -rf /var/lib/apt/lists/*
+RUN useradd -r gridvis -u 101 && apt update && apt -y install --no-install-recommends openjdk-11-jre fontconfig ttf-ubuntu-font-family xvfb libgtk-3-0 libxss1 libgbm1 && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /usr/local/GridVisService /usr/local/GridVisService
 
