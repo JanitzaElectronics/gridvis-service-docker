@@ -1,7 +1,7 @@
 FROM --platform=$BUILDPLATFORM ubuntu:20.04 AS builder
 
 ENV HOME /root
-ARG VERSION=8.0.64
+ARG VERSION=8.0.65
 
 COPY response.varfile /response.varfile
 RUN useradd -r gridvis -u 101 && apt update && apt -y install openjdk-11-jre fontconfig ttf-ubuntu-font-family wget gzip bash
@@ -18,7 +18,9 @@ COPY --from=builder /usr/local/GridVisService /usr/local/GridVisService
 RUN mkdir /opt/GridVisData \
  && chown gridvis -R /opt/GridVisData \
  && ln -s /opt/GridVisData/license2.lic /usr/local/GridVisService/license2.lic \
- && ln -s /opt/GridVisData/security.properties /opt/security.properties 
+ && ln -s /opt/GridVisData/security.properties /opt/security.properties \
+ && mkdir /home/gridvis \
+ && chown gridvis:gridvis /home/gridvis
 
 ENV USER_TIMEZONE UTC
 ENV USER_LANG en
