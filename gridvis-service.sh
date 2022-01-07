@@ -17,8 +17,8 @@ if [ -n "$STARTUP_GROOVY" ] && [ "$STARTUP_GROOVY" != "NONE" ]
 then                                                                           
     GROOVY_PARAM="--groovy $STARTUP_GROOVY"                         
 fi
-sed -i -E -e "s/Xmx[0-9]+m/Xmx${MAX_RAM_SIZE_MB}m/g" /usr/local/GridVisService/etc/service.conf
+sed -i -E -e "s/Xmx[0-9]+m/Xmx${MAX_RAM_SIZE_MB}m/g" /usr/local/GridVis/GridVis\ Service/etc/server.conf
 Xvfb :1 -screen 0 800x600x24+32 -nolisten tcp -nolisten unix &
 export DISPLAY=:1
 export TZ=${USER_TIMEZONE:-UTC}
-exec /usr/local/GridVisService/bin/server -J-Duser.timezone="${USER_TIMEZONE:-UTC}" --locale "${USER_LANG:-en}" -J-Dfile.encoding="${FILE_ENCODING:-UTF-8}" $FEATURE_PARAMS $GROOVY_PARAM
+exec /usr/local/GridVis/GridVis\ Service/bin/server -J-Duser.timezone="${USER_TIMEZONE:-UTC}" --locale "${USER_LANG:-en}" -J-Dfile.encoding="${FILE_ENCODING:-UTF-8}" $FEATURE_PARAMS $GROOVY_PARAM

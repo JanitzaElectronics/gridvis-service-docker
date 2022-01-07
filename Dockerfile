@@ -5,20 +5,19 @@ ARG VERSION=8.0.101
 
 COPY response.varfile /response.varfile
 RUN useradd -r gridvis -u 101 && apt update && apt -y install openjdk-11-jre fontconfig ttf-ubuntu-font-family wget gzip bash
-RUN echo Fetching https://gridvis.janitza.de/download/${VERSION}/GridVis-Service-${VERSION}-unix.sh
-RUN wget -q -O service.sh https://gridvis.janitza.de/download/${VERSION}/GridVis-Service-${VERSION}-unix.sh
-RUN sh service.sh -q -varfile /response.varfile \
-RUN sed -i 's#default_userdir.*$#default_userdir=/opt/GridVisData#' /usr/local/GridVisService/etc/server.conf
+RUN echo Fetching https://gridvis.janitza.de/download/${VERSION}/GridVis-Installer-${VERSION}-unix.sh
+RUN wget -q -O installer.sh https://gridvis.janitza.de/download/${VERSION}/GridVis-Installer-${VERSION}-unix.sh
+RUN sh installer.sh -q -varfile /response.varfile
 
 FROM ubuntu:20.04
 RUN useradd -r gridvis -u 101 && apt update && apt -y install --no-install-recommends openjdk-11-jre fontconfig ttf-ubuntu-font-family xvfb libgtk-3-0 libxss1 libgbm1 && rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /usr/local/GridVisService /usr/local/GridVisService
+COPY --from=builder /usr/local/GridVis /usr/local/GridVis
 
 RUN mkdir /opt/GridVisData \
  && chown gridvis -R /opt/GridVisData \
- && ln -s /opt/GridVisData/license2.lic /usr/local/GridVisService/license2.lic \
- && ln -s /opt/GridVisData/security.properties /opt/security.properties \
+ && chown gridvis -R /usr/local/GridVis/GridVis\ Service/etc \
+ && sed -i -e "/jdkhome/d" /usr/local/GridVis/GridVis\ Service/etc/server.conf \
  && mkdir /home/gridvis \
  && chown gridvis:gridvis /home/gridvis
 
