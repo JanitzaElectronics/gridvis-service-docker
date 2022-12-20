@@ -1,0 +1,27 @@
+{
+  "name": "@janitza/websdk-spa-autoadmin",
+  "description": "AutoAdmin SPA for GridVis Service",
+  "version": "0.0.1",
+  "keywords": [
+    "Janitza",
+    "WebSDK",
+    "SPA",
+    "Admin"
+  ],
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:janitza/autoadmin.git"
+  },
+  "author": {
+    "name": "Janitza electronics GmbH",
+    "email": "swek@janitza.com",
+    "url": "https://www.janitza.com/"
+  },
+  "janitza": {
+    "gridvis": {
+      "spa-public-path": "/maintenance",
+      "rest-ext-file": "restExt/main.groovy"
+    }
+  }
+}

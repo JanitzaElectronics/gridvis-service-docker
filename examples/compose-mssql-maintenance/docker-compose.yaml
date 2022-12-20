@@ -1,0 +1,22 @@
+services:
+  gridvis:
+    image: jnza/gridvis-service:nightly-m
+    volumes:
+      - ./GridVisProjects:/opt/GridVisProjects
+      - ./GridVisData:/opt/GridVisData
+    ports:
+      - 8081:8080
+    environment:
+      - DB_TYPE=mssql
+      - DB_HOST=database
+      - DB_PORT=1433
+      - DB_DATABASE=GridVis
+      - DB_USER=sa
+      - DB_PASSWORD=saPWDMustBeLong1
+    depends_on:
+      - database
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - MSSQL_SA_PASSWORD=saPWDMustBeLong1
+      - ACCEPT_EULA=Y

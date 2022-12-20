@@ -1,0 +1,8 @@
+services:
+  gridvis:
+    image: jnza/gridvis-service:nightly-m
+    volumes:
+      - ./GridVisProjects:/opt/GridVisProjects
+      - ./GridVisData:/opt/GridVisData
+    ports:
+      - 8080:8080

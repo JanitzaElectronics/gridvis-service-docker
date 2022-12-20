@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>META</groupId>
+    <artifactId>META</artifactId>
+    <name>META</name>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+    <properties>
+        <netbeans.version>RELEASE80</netbeans.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>de.janitza.pasw</groupId>
+            <artifactId>database-api</artifactId>
+            <version>10.115.2</version>
+        </dependency>
+        <dependency>
+            <groupId>de.janitza.pasw</groupId>
+            <artifactId>device-genericmodbus</artifactId>
+            <version>11.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>de.janitza.pasw.energy</groupId>
+            <artifactId>energy-rest-common</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>de.janitza.pasw.energy</groupId>
+            <artifactId>energy-rest-api</artifactId>
+            <version>1.11.2</version>
+        </dependency>
+        <dependency>
+            <groupId>de.janitza.pasw</groupId>
+            <artifactId>wrapper-jersey-common</artifactId>
+            <version>2.36</version>
+        </dependency>
+        <dependency>
+            <groupId>org.netbeans.api</groupId>
+            <artifactId>org-netbeans-modules-projectapi</artifactId>
+            <version>${netbeans.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>de.janitza.pasw</groupId>
+            <artifactId>project-server</artifactId>
+            <version>10.74.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aspose</groupId>
+            <artifactId>aspose-cells</artifactId>
+            <version>22.3</version>
+        </dependency>
+    </dependencies>
+</project>
