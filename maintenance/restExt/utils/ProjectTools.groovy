@@ -3,7 +3,6 @@ package utils
 import de.janitza.pasw.project.api.state.BaseProjectState
 import de.janitza.pasw.project.api.state.IProjectStateHandler
 
-import java.lang.module.Configuration
 import java.util.logging.Logger
 
 import de.janitza.pasw.database.ConfigurationItems
@@ -15,25 +14,28 @@ import de.janitza.pasw.energy.common.ServerLkp
 import de.janitza.pasw.project.api.IProjectListProvider
 import de.janitza.pasw.project.base.DatabaseProjectInitializer
 import de.janitza.pasw.project.server.IProjectManager
-import de.janitza.pasw.project.server.ServerNameUtil;
-
 import org.openide.util.Lookup
 
 class ProjectTools {
 
     private static final Logger LOGGER = Logger.getLogger(ProjectTools.class.getName())
-    private final static PROJECT_DIR = "/opt/GridVisProjects/default"
+    private static final PROJECT_BASE_DIR = "/opt/GridVisProjects"
 
     static getProjects() {
         return ServerLkp.lookup(IProjectList.class).getAllReadyProjects()
     }
 
+    static String getProjectPath() {
+        def prjName = System.getenv('PROJECT_NAME') ?: 'default'
+        return new File(PROJECT_BASE_DIR, prjName).getAbsolutePath()
+    }
+
     static boolean checkProjectDir() {
-        new File(PROJECT_DIR).exists()
+        new File(getProjectPath()).exists()
     }
 
     static createProject(Map<ConfigurationItems, String> configMap, String dbType) {
-        def prjFile = new File(PROJECT_DIR)
+        def prjFile = new File(getProjectPath())
         def initializer = new DatabaseProjectInitializer(prjFile, dbType, configMap)
         initializer.createDirecotry()
         new File(prjFile, "symbols").mkdirs()
@@ -44,7 +46,7 @@ class ProjectTools {
     }
 
     static createJanDBProject() {
-        def configMap = Collections.singletonMap(ConfigurationItems.ProjectDir, PROJECT_DIR)
+        def configMap = Collections.singletonMap(ConfigurationItems.ProjectDir, getProjectPath())
         createProject(configMap, "janitzadb")
     }
 
@@ -72,9 +74,9 @@ class ProjectTools {
         Lookup.getDefault().lookup(IProjectListProvider.class).getAllProjects().each { p ->
             if(p.getLookup().lookup(IProjectStateHandler.class).getState() != BaseProjectState.Ready) {
                 final IDatabaseManager ret = p.getLookup().lookup(IDatabaseManager.class)
-                final Collection<? extends IMigration> migrations = ret.migrations;
+                final Collection<? extends IMigration> migrations = ret.migrations
                 if (migrations.size() > 0) {
-                    println "Perform database migration"
+                    println "Performing database migration"
                     MigrationHelper.doMigrations(migrations)
                 }
             }
@@ -82,12 +84,12 @@ class ProjectTools {
     }
 
     static getProject() {
-        def projects = Lookup.getDefault().lookup(IProjectListProvider.class).allReadyProjects;
-        return projects.size() > 0 ? projects.get(0) : null;
+        def projects = Lookup.getDefault().lookup(IProjectListProvider.class).allReadyProjects
+        return projects.size() > 0 ? projects.get(0) : null
     }
 
     static minuteJob() {
         System.out.println("Minute Job")
-        checkMigration();
+        checkMigration()
     }
 }

@@ -1,6 +1,7 @@
 services:
   gridvis:
     image: jnza/gridvis-service:nightly-m
+    shm_size: "1gb"
     volumes:
       - ./GridVisProjects:/opt/GridVisProjects
       - ./GridVisData:/opt/GridVisData

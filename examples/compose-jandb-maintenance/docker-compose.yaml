@@ -1,8 +1,11 @@
 services:
   gridvis:
     image: jnza/gridvis-service:nightly-m
+    shm_size: "1gb"
     volumes:
       - ./GridVisProjects:/opt/GridVisProjects
       - ./GridVisData:/opt/GridVisData
     ports:
       - 8080:8080
+    environment:
+      - PROJECT_NAME=GridVisProject
