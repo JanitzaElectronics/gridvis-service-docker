@@ -1,7 +1,8 @@
 package utils
 
-import de.janitza.pasw.project.api.state.BaseProjectState
-import de.janitza.pasw.project.api.state.IProjectStateHandler
+import csv.CSV
+import csv.IDeviceListImportParameters
+import csv.ImportInformation
 
 import java.util.logging.Logger
 
@@ -9,12 +10,18 @@ import de.janitza.pasw.database.ConfigurationItems
 import de.janitza.pasw.database.IDatabaseManager
 import de.janitza.pasw.database.migration.IMigration
 import de.janitza.pasw.database.tools.MigrationHelper
+import de.janitza.pasw.device.core.api.IDeviceManager
 import de.janitza.pasw.energy.api.IProjectList
 import de.janitza.pasw.energy.common.ServerLkp
 import de.janitza.pasw.project.api.IProjectListProvider
+import de.janitza.pasw.project.api.state.BaseProjectState
+import de.janitza.pasw.project.api.state.IProjectStateHandler
 import de.janitza.pasw.project.base.DatabaseProjectInitializer
 import de.janitza.pasw.project.server.IProjectManager
+
 import org.openide.util.Lookup
+
+import org.netbeans.api.project.Project
 
 class ProjectTools {
 
@@ -25,9 +32,12 @@ class ProjectTools {
         return ServerLkp.lookup(IProjectList.class).getAllReadyProjects()
     }
 
+    static String getProjectName() {
+        return System.getenv('PROJECT_NAME') ?: 'default';
+    }
+
     static String getProjectPath() {
-        def prjName = System.getenv('PROJECT_NAME') ?: 'default'
-        return new File(PROJECT_BASE_DIR, prjName).getAbsolutePath()
+        return new File(PROJECT_BASE_DIR, getProjectName()).getAbsolutePath()
     }
 
     static boolean checkProjectDir() {
@@ -88,8 +98,39 @@ class ProjectTools {
         return projects.size() > 0 ? projects.get(0) : null
     }
 
+    static importDevices() {
+        if(ProjectTools.getProject() != null && new File("/opt/GridVisData/devices.csv").exists()) {
+            System.out.println("Device Import")
+            def importInfo = new ImportInformation()
+            final List<IDeviceManager.AddDeviceHelper> existingDevices = new ArrayList<>()
+            final List<IDeviceManager.AddDeviceHelper> addedDevices = new ArrayList<>()
+            CSV.importDevices(new ImportParameter(), false, importInfo, addedDevices, existingDevices)
+            println("Imported: " + importInfo.numberImportedDevices)
+            println("Skipped: " + importInfo.numberSkippedDevices)
+        }
+
+    }
+
     static minuteJob() {
         System.out.println("Minute Job")
         checkMigration()
+        importDevices()
     }
+
+    static class ImportParameter implements IDeviceListImportParameters {
+
+        Project getProject() {
+            return ProjectTools.getProject()
+        }
+
+        File getImportFile() {
+            new File("/opt/GridVisData/devices.csv")
+        }
+
+        boolean hasToSetTimeplanForAutoSync() {
+            return false
+        }
+    }
+
+
 }

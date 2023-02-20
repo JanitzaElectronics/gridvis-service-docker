@@ -6,10 +6,6 @@
 package csv;
 
 import de.janitza.pasw.device.core.connection.api.connectiontype.ConnectionTypes;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  *
