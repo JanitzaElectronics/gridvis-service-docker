@@ -1,3 +1,4 @@
+import utils.DeviceTools
 import utils.ProjectTools
 
 if(!ProjectTools.checkProjectDir()) {
@@ -13,10 +14,14 @@ if(!ProjectTools.checkProjectDir()) {
 
 Thread.start {
     //noinspection GroovyInfiniteLoopStatement
+    def autosync = "true".equals(System.getenv('AUTO_SYNC') ?: 'false')
     while(true) {
         try {
             Thread.sleep(60000)
             ProjectTools.minuteJob()
+            if(autosync) {
+                DeviceTools.syncDevices()
+            }
         } catch (e) {
             e.printStackTrace()
         }

@@ -4,16 +4,19 @@ Core features of the maintenance mode:
 * Automatically create a new project and set up the database
 * Automatically perform all necessary database migration
 * Import devices from a CSV file into the project
-  Presently, the maintenance mode only supports on project per GridVis Service.
+* Read out the memory of the devices into the database
+
+Presently, the maintenance mode only supports one project per GridVis Service.
 
 ## Setup
 ### General setup
 To make use of the maintenance mode, just use a docker image with a `-m`suffix. If you do not specify any environment variables, a JanDB project with project name "default" will be created.
 
-| Environment variable | Description | Default |
-|------|------|--------|
+| Environment variable | Description                                                                                                                                                               | Default   |
+|------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
 | PROJECT_NAME | Defines the name of the project. This is used during creation of  the project and cannot be changes afterwards. If you change this variable, a new project will be created. | `default` |
-| DB_TYPE | Specifies the database to use for the project. Possible values are: `jandb`,  `mariadb` and `mssql`.| `jandb` |
+| DB_TYPE | Specifies the database to use for the project. Possible values are: `jandb`,  `mariadb` and `mssql`.                                                                      | `jandb`   |
+ | AUTO_SYNC | Toogles the auto synchronization functionality. If `true` each devices whos last sync status is older than 15 Minutes is automatically synchronized.                      | `false`   |
 ### JanDB
 For a JanDB project, no further configuration is required.
 
@@ -47,3 +50,4 @@ For the easiest setup, you can have a look at our [example](../examples) collect
 ## Automatic device import
 You can add a file `devices.csv`into the GridVis Data directory, and GridVis will import the devices specified once per minute. 
 Devices already imported will be skipped. This way you can add new devices to the CSV file and only the new devices will be created.
+The format is the same used in GridVis Desktop Import / Export.
