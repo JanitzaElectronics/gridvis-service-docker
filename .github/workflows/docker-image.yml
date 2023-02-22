@@ -27,6 +27,20 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
       -
+        name: Docker meta
+        id: meta_m
+        uses: crazy-max/ghaction-docker-meta@v2
+        with:
+          images: jnza/gridvis-service
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+          flavor: |
+            latest=auto
+            suffix="-m",onlatest=true
+      -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       -
@@ -47,3 +61,12 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: maintenance
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta_m.outputs.tags }}
+          labels: ${{ steps.meta_m.outputs.labels }}
