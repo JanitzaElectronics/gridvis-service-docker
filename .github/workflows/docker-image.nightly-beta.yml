@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: "23 21 * * 1-5"
 
+env:
+  VERSION: VERSION=9.0.20-SNAPSHOT
+
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -31,4 +34,4 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: jnza/gridvis-service:nightly-beta
-          build-args: VERSION=9.0.0-SNAPSHOT
+          build-args: ${{ env.VERSION }}
