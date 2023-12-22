@@ -1,5 +1,8 @@
 name: Docker Image CI Beta Release
 
+env:
+  GV_BASE_IMAGE: GV_BASE_IMAGE=beta-beta
+
 on:
   push:
     branches: [ beta ]
