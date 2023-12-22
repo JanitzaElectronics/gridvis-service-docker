@@ -4,7 +4,7 @@ on:
   push:
     branches: [ beta ]
     tags:
-      - 'b*'
+      - 'v*'
   pull_request:
     branches: [ beta ]
 
