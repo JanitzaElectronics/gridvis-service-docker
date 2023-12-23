@@ -76,3 +76,4 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta_m.outputs.tags }}
           labels: ${{ steps.meta_m.outputs.labels }}
+          build-args: ${{ env.GV_BASE_IMAGE }}
