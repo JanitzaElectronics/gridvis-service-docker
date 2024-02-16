@@ -35,3 +35,4 @@ EXPOSE 8080
 
 USER gridvis
 CMD ["/gridvis-service.sh"]
+
