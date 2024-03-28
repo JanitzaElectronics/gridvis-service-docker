@@ -1,12 +1,15 @@
-name: Docker Image CI
+name: Docker Image CI Beta Release
+
+env:
+  GV_BASE_IMAGE: GV_BASE_IMAGE=beta-beta
 
 on:
   push:
-    branches: [ main ]
+    branches: [ beta ]
     tags:
       - 'v*'
   pull_request:
-    branches: [ main ]
+    branches: [ beta ]
 
 jobs:
   docker:
@@ -26,6 +29,9 @@ jobs:
             type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
+          flavor: |
+            latest=auto
+            suffix=-beta
       -
         name: Docker meta
         id: meta_m
@@ -39,7 +45,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
           flavor: |
             latest=auto
-            suffix=-m,onlatest=true
+            suffix=-beta-m,onlatest=true
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -70,3 +76,4 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta_m.outputs.tags }}
           labels: ${{ steps.meta_m.outputs.labels }}
+          build-args: ${{ env.GV_BASE_IMAGE }}
