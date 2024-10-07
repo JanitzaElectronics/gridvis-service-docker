@@ -2,7 +2,7 @@ name: Docker Image CI nightly-beta
 
 on:
   schedule:
-    - cron: "23 21 * * 1-5"
+    - cron: "08 10 * * 1-5"
 
 env:
   VERSION: VERSION=9.1.60-SNAPSHOT
