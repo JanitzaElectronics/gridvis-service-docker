@@ -10,6 +10,9 @@ on:
       - 'v*'
   pull_request:
     branches: [ beta ]
+  workflow_dispatch:
+  schedule:
+    - cron: "23 21 * * 1-5"  
 
 jobs:
   docker:
