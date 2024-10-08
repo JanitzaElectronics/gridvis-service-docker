@@ -4,7 +4,7 @@ on:
   push:
     branches: [ beta ]
   schedule:
-    - cron: "00 23 * * 1-5"
+    - cron: "05 23 * * 1-5"
 
 env:
   VERSION: VERSION=9.1.80-SNAPSHOT
