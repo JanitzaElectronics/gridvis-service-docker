@@ -3,7 +3,7 @@ name: Docker Image CI nightly
 on:
   workflow_dispatch:
   schedule:
-    - cron: "23 21 * * 1-5"
+    - cron: "00 23 * * 1-5"
 
 env:
   VERSION: VERSION=9.2.0-SNAPSHOT
