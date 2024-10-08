@@ -1,7 +1,7 @@
 name: Docker Image CI nightly-beta
 
 env:
-  VERSION: VERSION=9.1.80-SNAPSHOT
+  VERSION: VERSION=9.1.80beta1
 
 on:
   push:
