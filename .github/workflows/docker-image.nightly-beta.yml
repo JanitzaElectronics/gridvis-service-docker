@@ -3,10 +3,8 @@ name: Docker Image CI nightly-beta
 on:
   push:
     branches: [ beta ]
-    tags:
-      - 'v*'
   schedule:
-    - cron: "05 23 * * 1-5"
+    - cron: "00 23 * * 1-5"
 
 env:
   VERSION: VERSION=9.1.80-SNAPSHOT
