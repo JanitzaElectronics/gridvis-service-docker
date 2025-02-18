@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM ubuntu:22.04 AS builder
+FROM --platform=$BUILDPLATFORM ubuntu:24.04 AS builder
 
 ENV HOME /root
 ARG VERSION=9.2.0beta1
@@ -9,7 +9,7 @@ RUN echo Fetching https://gridvis.janitza.de/download/${VERSION}/GridVis-Install
 RUN wget -q -O installer.sh https://gridvis.janitza.de/download/${VERSION}/GridVis-Installer-${VERSION}-unix.sh
 RUN sh installer.sh -q -varfile /response.varfile
 
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 RUN useradd -r gridvis -u 101 && apt update && apt -y install --no-install-recommends openjdk-17-jre fontconfig fonts-freefont-ttf xvfb libgtk-3-0 libxss1 libgbm1 && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /usr/local/GridVis /usr/local/GridVis
