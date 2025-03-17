@@ -1,7 +1,7 @@
 FROM --platform=$BUILDPLATFORM ubuntu:24.04 AS builder
 
 ENV HOME /root
-ARG VERSION=9.2.0beta1
+ARG VERSION=9.2.0beta2
 
 COPY response.varfile /response.varfile
 RUN useradd -r gridvis -u 101 && apt update && apt -y install openjdk-11-jre fontconfig fonts-freefont-ttf wget gzip bash
