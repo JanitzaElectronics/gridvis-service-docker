@@ -7,7 +7,7 @@ on:
     - cron: "00 23 * * 1-5"
 
 env:
-  VERSION: VERSION=9.2.20-SNAPSHOT
+  VERSION: VERSION=9.2.43-SNAPSHOT
 
 jobs:
   docker:

@@ -6,7 +6,7 @@ on:
     - cron: "00 23 * * 1-5"
 
 env:
-  VERSION: VERSION=9.2.40-SNAPSHOT
+  VERSION: VERSION=9.2.60-SNAPSHOT
   GV_BASE_IMAGE: GV_BASE_IMAGE=nightly
 
 jobs:
