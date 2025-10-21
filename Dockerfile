@@ -4,13 +4,13 @@ ENV HOME /root
 ARG VERSION=9.2.42
 
 COPY response.varfile /response.varfile
-RUN useradd -r gridvis -u 101 && apt update && apt -y install openjdk-11-jre fontconfig fonts-freefont-ttf wget gzip bash
+RUN useradd -r gridvis -u 101 && apt update && apt -y install openjdk-21-jre fontconfig fonts-freefont-ttf wget gzip bash
 RUN echo Fetching https://gridvis.janitza.de/download/${VERSION}/GridVis-Installer-${VERSION}-unix.sh
 RUN wget -q -O installer.sh https://gridvis.janitza.de/download/${VERSION}/GridVis-Installer-${VERSION}-unix.sh
 RUN sh installer.sh -q -varfile /response.varfile
 
 FROM ubuntu:22.04
-RUN useradd -r gridvis -u 101 && apt update && apt -y install --no-install-recommends openjdk-17-jre fontconfig fonts-freefont-ttf xvfb libgtk-3-0 libxss1 libgbm1 && rm -rf /var/lib/apt/lists/*
+RUN useradd -r gridvis -u 101 && apt update && apt -y install --no-install-recommends openjdk-21-jre fontconfig fonts-freefont-ttf xvfb libgtk-3-0 libxss1 libgbm1 && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /usr/local/GridVis /usr/local/GridVis
 
