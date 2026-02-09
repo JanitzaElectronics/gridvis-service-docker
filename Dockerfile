@@ -1,7 +1,7 @@
 FROM --platform=$BUILDPLATFORM ubuntu:22.04 AS builder
 
 ENV HOME /root
-ARG VERSION=9.2.61
+ARG VERSION=9.2.63
 
 COPY response.varfile /response.varfile
 RUN useradd -r gridvis -u 101 && apt update && apt -y install openjdk-25-jre fontconfig fonts-freefont-ttf wget gzip bash
