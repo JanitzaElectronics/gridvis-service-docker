@@ -1,6 +1,6 @@
 FROM --platform=$BUILDPLATFORM ubuntu:22.04 AS builder
 
-ENV HOME /root
+ENV HOME=/root
 ARG VERSION=9.2.64
 
 COPY response.varfile /response.varfile
@@ -27,6 +27,8 @@ RUN mkdir /opt/GridVisData \
  && sed -i -e "/jdkhome/d" /usr/local/GridVis/GridVis\ Service/etc/server.conf \
  && mkdir /home/gridvis \
  && chown gridvis:gridvis /home/gridvis
+
+COPY features.properties /opt/GridVisData/features.properties
 
 ENV USER_TIMEZONE UTC
 ENV USER_LANG en
