@@ -5,6 +5,13 @@ ARG VERSION=9.2.64
 
 COPY response.varfile /response.varfile
 RUN useradd -r gridvis -u 101 && apt update && apt -y install openjdk-25-jre fontconfig fonts-freefont-ttf wget gzip bash
+
+# Locate the Java directory and create a link to it in the path expected by the silent installer so that JxBrowser can be extracted.
+RUN JAVA_BIN="$(readlink -f "$(command -v java)")" \
+ && JAVA_HOME="$(dirname "$(dirname "$JAVA_BIN")")" \
+ && mkdir -p /usr/local/GridVis \
+ && ln -s "$JAVA_HOME" /usr/local/GridVis/jre
+
 RUN echo Fetching https://gridvis.janitza.de/download/${VERSION}/GridVis-Installer-${VERSION}-unix.sh
 RUN wget -q -O installer.sh https://gridvis.janitza.de/download/${VERSION}/GridVis-Installer-${VERSION}-unix.sh
 RUN sh installer.sh -q -varfile /response.varfile
