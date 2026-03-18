@@ -1,10 +1,13 @@
-FROM --platform=$BUILDPLATFORM ubuntu:22.04 AS builder
+FROM --platform=$BUILDPLATFORM debian:13.4-slim AS builder
 
 ENV HOME=/root
 ARG VERSION=9.2.64
 
 COPY response.varfile /response.varfile
-RUN useradd -r gridvis -u 101 && apt update && apt -y install openjdk-25-jre fontconfig fonts-freefont-ttf wget gzip bash
+RUN useradd -r gridvis -u 101 \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends openjdk-25-jre fontconfig fonts-freefont-ttf wget gzip bash \
+ && rm -rf /var/lib/apt/lists/*
 
 # Locate the Java directory and create a link to it in the path expected by the silent installer so that JxBrowser can be extracted.
 RUN JAVA_BIN="$(readlink -f "$(command -v java)")" \
@@ -16,8 +19,11 @@ RUN echo Fetching https://gridvis.janitza.de/download/${VERSION}/GridVis-Install
 RUN wget -q -O installer.sh https://gridvis.janitza.de/download/${VERSION}/GridVis-Installer-${VERSION}-unix.sh
 RUN sh installer.sh -q -varfile /response.varfile
 
-FROM ubuntu:22.04
-RUN useradd -r gridvis -u 101 && apt update && apt -y install --no-install-recommends openjdk-25-jre fontconfig fonts-freefont-ttf xvfb libgtk-3-0 libxss1 libgbm1 && rm -rf /var/lib/apt/lists/*
+FROM debian:13.4-slim
+RUN useradd -r gridvis -u 101 \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends openjdk-25-jre fontconfig fonts-freefont-ttf xvfb libgtk-3-0t64 libxss1 libgbm1 \
+ && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /usr/local/GridVis /usr/local/GridVis
 
@@ -30,12 +36,12 @@ RUN mkdir /opt/GridVisData \
 
 COPY features.properties /opt/GridVisData/features.properties
 
-ENV USER_TIMEZONE UTC
-ENV USER_LANG en
-ENV FEATURE_TOGGLES NONE
-ENV LANG=en_US.UTF-8
-ENV SERVICE_PARAMS NONE
-ENV MAX_RAM_SIZE_MB 1024
+ENV USER_TIMEZONE=UTC
+ENV USER_LANG=en
+ENV FEATURE_TOGGLES=NONE
+ENV LANG=C.UTF-8
+ENV SERVICE_PARAMS=NONE
+ENV MAX_RAM_SIZE_MB=1024
 
 VOLUME ["/opt/GridVisData", "/opt/GridVisProjects"]
 COPY gridvis-service.sh /gridvis-service.sh
