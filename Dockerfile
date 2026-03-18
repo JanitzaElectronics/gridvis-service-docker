@@ -34,8 +34,6 @@ RUN mkdir /opt/GridVisData \
  && mkdir /home/gridvis \
  && chown gridvis:gridvis /home/gridvis
 
-COPY features.properties /opt/GridVisData/features.properties
-
 ENV USER_TIMEZONE=UTC
 ENV USER_LANG=en
 ENV FEATURE_TOGGLES=NONE
