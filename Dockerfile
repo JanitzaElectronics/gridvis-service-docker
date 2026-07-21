@@ -1,7 +1,7 @@
 FROM --platform=$BUILDPLATFORM debian:13.4-slim AS builder
 
 ENV HOME=/root
-ARG VERSION=9.2.100
+ARG VERSION=9.2.101
 
 COPY response.varfile /response.varfile
 RUN useradd -r gridvis -u 101 \
