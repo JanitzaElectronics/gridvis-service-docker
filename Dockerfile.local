@@ -1,0 +1,14 @@
+# Fast test image: uses the published GridVis runtime without downloading an installer.
+FROM jnza/gridvis-service:nightly
+
+USER root
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends util-linux \
+ && rm -rf /var/lib/apt/lists/*
+
+COPY gridvis-service.sh /gridvis-service.sh
+COPY write-admin-password.groovy /usr/local/lib/gridvis/write-admin-password.groovy
+RUN chmod 0755 /gridvis-service.sh
+
+CMD ["/gridvis-service.sh"]

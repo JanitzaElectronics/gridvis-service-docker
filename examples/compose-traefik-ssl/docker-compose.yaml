@@ -23,6 +23,7 @@ services:
 
     environment:
       - FEATURE_TOGGLES=de.pasw.jetty.reverseproxy
+      - GRIDVIS_ADMIN_PASSWORD=${GRIDVIS_ADMIN_PASSWORD:?set GRIDVIS_ADMIN_PASSWORD}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.whoami.rule=Host(`gridvis.example.com`)"

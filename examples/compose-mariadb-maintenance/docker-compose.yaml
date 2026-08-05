@@ -8,6 +8,7 @@ services:
     ports:
       - 8080:8080
     environment:
+      - GRIDVIS_ADMIN_PASSWORD=${GRIDVIS_ADMIN_PASSWORD:?set GRIDVIS_ADMIN_PASSWORD}
       - DB_TYPE=mariadb
       - DB_HOST=database
       - DB_PORT=3306

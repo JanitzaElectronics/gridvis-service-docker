@@ -17,12 +17,20 @@ RUN JAVA_BIN="$(readlink -f "$(command -v java)")" \
 
 RUN echo Fetching https://gridvis.janitza.de/download/${VERSION}/GridVis-Installer-${VERSION}-unix.sh
 RUN wget -q -O installer.sh https://gridvis.janitza.de/download/${VERSION}/GridVis-Installer-${VERSION}-unix.sh
-RUN sh installer.sh -q -varfile /response.varfile
+RUN TEMP_ADMIN_PASSWORD="Aa1!$(head -c 12 /dev/urandom | base64)" \
+ && if [ "${#TEMP_ADMIN_PASSWORD}" -ne 20 ]; then \
+      echo "Could not generate temporary GridVis admin password during image build" >&2; \
+      exit 1; \
+    fi \
+ && if ! sh installer.sh -q -varfile /response.varfile -VserviceAdminPassword="$TEMP_ADMIN_PASSWORD" >/dev/null 2>&1; then \
+      echo "GridVis installer failed during image build" >&2; \
+      exit 1; \
+    fi
 
 FROM debian:13.4-slim
 RUN useradd -r gridvis -u 101 \
  && apt-get update \
- && apt-get install -y --no-install-recommends openjdk-25-jre fontconfig fonts-freefont-ttf xvfb libgtk-3-0t64 libxss1 libgbm1 \
+ && apt-get install -y --no-install-recommends openjdk-25-jre fontconfig fonts-freefont-ttf xvfb libgtk-3-0t64 libxss1 libgbm1 util-linux \
  && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /usr/local/GridVis /usr/local/GridVis
@@ -43,8 +51,9 @@ ENV MAX_RAM_SIZE_MB=1024
 
 VOLUME ["/opt/GridVisData", "/opt/GridVisProjects"]
 COPY gridvis-service.sh /gridvis-service.sh
+COPY write-admin-password.groovy /usr/local/lib/gridvis/write-admin-password.groovy
+RUN chmod 0755 /gridvis-service.sh
 
 EXPOSE 8080
 
-USER gridvis
 CMD ["/gridvis-service.sh"]
