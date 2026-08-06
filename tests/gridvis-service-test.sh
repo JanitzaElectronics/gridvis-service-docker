@@ -92,6 +92,23 @@ esac
 [ -z "$output" ] || fail 'password generation produced unexpected output'
 pass 'generated password is secure and satisfies GridVis length policy'
 
+output=$(
+    get_admin_password() {
+        ADMIN_PASSWORD='GeneratedPassword1!'
+        ADMIN_PASSWORD_SOURCE='generated'
+    }
+    write_admin_password() {
+        return 0
+    }
+    create_admin_password_marker() {
+        return 0
+    }
+    initialize_admin_password
+)
+assert_contains "$output" 'Generated GridVis admin password: GeneratedPassword1!'
+assert_contains "$output" 'Please change this generated password after your first login.'
+pass 'generated password output recommends changing it after first login'
+
 reset_password_environment
 marker="$TEST_ROOT/marker"
 : > "$marker"

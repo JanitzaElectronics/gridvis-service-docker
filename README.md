@@ -8,7 +8,7 @@ The GridVis admin password is initialized once for each persistent `/opt/GridVis
 2. `GRIDVIS_ADMIN_PASSWORD`: use the value of this environment variable.
 3. If neither setting is present, generate a cryptographically secure random password.
 
-An empty variable, an empty or unreadable password file, or a missing file is an error. Passwords must satisfy the GridVis policy: 8–20 characters with upper- and lower-case letters, a digit, a special character, and no whitespace. Passwords supplied through a variable or file are never written to the container logs. A generated password is printed once after initialization succeeds, so save it from the first-start logs.
+An empty variable, an empty or unreadable password file, or a missing file is an error. Passwords must satisfy the GridVis policy: 8–20 characters with upper- and lower-case letters, a digit, a special character, and no whitespace. Passwords supplied through a variable or file are never written to the container logs. A generated password is printed once after initialization succeeds, so save it from the first-start logs and change it after your first login.
 
 After successful initialization, the container creates:
 

@@ -124,6 +124,7 @@ initialize_admin_password() {
 
     if [ "$ADMIN_PASSWORD_SOURCE" = generated ]; then
         printf 'Generated GridVis admin password: %s\n' "$generated_password"
+        printf 'Please change this generated password after your first login.\n'
     else
         printf 'GridVis admin password initialized from %s.\n' "$ADMIN_PASSWORD_SOURCE"
     fi
