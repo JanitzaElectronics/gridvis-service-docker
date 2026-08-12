@@ -89,6 +89,18 @@ admin_password_initialization_required() {
         && gridvis_userdir_is_empty "$userdir"
 }
 
+admin_password_preserved_for_existing_userdir() {
+    marker=${1:-$ADMIN_PASSWORD_MARKER}
+    userdir=${2:-$GRIDVIS_DATA_DIR}
+    [ "${GRIDVIS_INITIALIZE_ADMIN_PASSWORD:-true}" != false ] \
+        && [ ! -f "$marker" ] \
+        && ! gridvis_userdir_is_empty "$userdir"
+}
+
+log_admin_password_preserved() {
+    printf '%s\n' 'Existing GridVis user directory detected; configured admin password was not changed.'
+}
+
 write_admin_password() {
     if [ ! -f "$PASSWORD_WRITER" ]; then
         error "Password writer is not available: $PASSWORD_WRITER"
@@ -196,6 +208,8 @@ main() {
     if [ "$(id -u)" -eq 0 ]; then
         if admin_password_initialization_required "$ADMIN_PASSWORD_MARKER"; then
             initialize_admin_password
+        elif admin_password_preserved_for_existing_userdir "$ADMIN_PASSWORD_MARKER"; then
+            log_admin_password_preserved
         fi
         unset GRIDVIS_ADMIN_PASSWORD GRIDVIS_ADMIN_PASSWORD_FILE
         exec env HOME=/home/gridvis setpriv --reuid=gridvis --regid=gridvis \

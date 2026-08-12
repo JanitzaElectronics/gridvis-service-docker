@@ -126,6 +126,13 @@ if admin_password_initialization_required "$TEST_ROOT/existing-volume-marker" "$
 fi
 pass 'non-empty existing userdir without marker skips bootstrap'
 
+if ! admin_password_preserved_for_existing_userdir "$TEST_ROOT/existing-volume-marker" "$existing_userdir"; then
+    fail 'existing userdir was not identified as password-preserving'
+fi
+output=$(log_admin_password_preserved)
+assert_contains "$output" 'configured admin password was not changed'
+pass 'existing userdir reports password preservation'
+
 reset_password_environment
 new_userdir="$TEST_ROOT/new-userdir"
 mkdir -p "$new_userdir"
