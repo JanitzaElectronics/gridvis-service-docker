@@ -65,15 +65,28 @@ get_admin_password() {
     esac
 }
 
+gridvis_userdir_is_empty() {
+    userdir=${1:-$GRIDVIS_DATA_DIR}
+    [ -d "$userdir" ] || return 0
+
+    # Do not rely on a particular GridVis version's userdir layout. A userdir
+    # from an existing installation may not contain config/server.conf.
+    for entry in "$userdir"/* "$userdir"/.[!.]* "$userdir"/..?*; do
+        [ -e "$entry" ] || continue
+        return 1
+    done
+    return 0
+}
+
 admin_password_initialization_required() {
     marker=${1:-$ADMIN_PASSWORD_MARKER}
-    config=${2:-$ADMIN_PASSWORD_CONFIG}
+    userdir=${2:-$GRIDVIS_DATA_DIR}
     # A bind-mounted userdir can predate this image and therefore not contain
-    # our marker.  Its server configuration is authoritative: do not replace
-    # an existing GridVis password merely because the marker is absent.
+    # our marker. Its existing contents are authoritative: do not replace an
+    # existing GridVis password merely because the marker is absent.
     [ "${GRIDVIS_INITIALIZE_ADMIN_PASSWORD:-true}" != false ] \
         && [ ! -f "$marker" ] \
-        && [ ! -f "$config" ]
+        && gridvis_userdir_is_empty "$userdir"
 }
 
 write_admin_password() {

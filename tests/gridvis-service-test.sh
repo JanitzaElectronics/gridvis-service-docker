@@ -118,17 +118,18 @@ fi
 pass 'restart with marker skips bootstrap'
 
 reset_password_environment
-existing_config="$TEST_ROOT/existing-userdir/config/server.conf"
-mkdir -p "${existing_config%/*}"
-: > "$existing_config"
-if admin_password_initialization_required "$TEST_ROOT/existing-volume-marker" "$existing_config"; then
+existing_userdir="$TEST_ROOT/existing-userdir"
+mkdir -p "$existing_userdir/var"
+: > "$existing_userdir/var/preferences.xml"
+if admin_password_initialization_required "$TEST_ROOT/existing-volume-marker" "$existing_userdir"; then
     fail 'existing userdir configuration without marker required bootstrap'
 fi
-pass 'existing userdir configuration without marker skips bootstrap'
+pass 'non-empty existing userdir without marker skips bootstrap'
 
 reset_password_environment
-new_config="$TEST_ROOT/new-userdir/config/server.conf"
-if ! admin_password_initialization_required "$TEST_ROOT/new-userdir-marker" "$new_config"; then
+new_userdir="$TEST_ROOT/new-userdir"
+mkdir -p "$new_userdir"
+if ! admin_password_initialization_required "$TEST_ROOT/new-userdir-marker" "$new_userdir"; then
     fail 'new userdir without configuration skipped bootstrap'
 fi
 pass 'new userdir without configuration requires bootstrap'
