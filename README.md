@@ -20,7 +20,7 @@ As long as this marker remains in the persistent volume, later starts skip passw
 
 No installer is stored in the runtime image or downloaded during container startup. The Docker build still uses the installer to create the GridVis installation, with an internally generated temporary password which is neither logged nor retained as a build argument.
 
-Existing volumes without the marker are initialized as well. This method configures GridVis' service fallback realm in `server.conf`; an independently configured user database is not changed and must be rotated using GridVis' REST API or its administration UI. To retain the password of an existing installation instead, set `GRIDVIS_INITIALIZE_ADMIN_PASSWORD=false`; no marker is created, so removing that setting later enables initialization. Do not disable initialization for a new volume because the temporary build-time password is intentionally not exposed.
+For a new, empty user directory, the container initializes the password and writes the marker. If a mounted user directory already contains `config/server.conf`, it is treated as an existing GridVis installation: its password is left unchanged even if the marker is absent. This method configures GridVis' service fallback realm in `server.conf`; an independently configured user database is not changed and must be rotated using GridVis' REST API or its administration UI. To explicitly skip initialization for any user directory, set `GRIDVIS_INITIALIZE_ADMIN_PASSWORD=false`; no marker is created, so removing that setting later enables initialization. Do not disable initialization for a new volume because the temporary build-time password is intentionally not exposed.
 
 ### Local test image
 

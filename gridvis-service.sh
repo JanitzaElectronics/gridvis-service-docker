@@ -67,7 +67,13 @@ get_admin_password() {
 
 admin_password_initialization_required() {
     marker=${1:-$ADMIN_PASSWORD_MARKER}
-    [ "${GRIDVIS_INITIALIZE_ADMIN_PASSWORD:-true}" != false ] && [ ! -f "$marker" ]
+    config=${2:-$ADMIN_PASSWORD_CONFIG}
+    # A bind-mounted userdir can predate this image and therefore not contain
+    # our marker.  Its server configuration is authoritative: do not replace
+    # an existing GridVis password merely because the marker is absent.
+    [ "${GRIDVIS_INITIALIZE_ADMIN_PASSWORD:-true}" != false ] \
+        && [ ! -f "$marker" ] \
+        && [ ! -f "$config" ]
 }
 
 write_admin_password() {

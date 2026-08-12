@@ -118,11 +118,20 @@ fi
 pass 'restart with marker skips bootstrap'
 
 reset_password_environment
-existing_marker="$TEST_ROOT/existing-volume-marker"
-if ! admin_password_initialization_required "$existing_marker"; then
-    fail 'existing volume without marker skipped bootstrap'
+existing_config="$TEST_ROOT/existing-userdir/config/server.conf"
+mkdir -p "${existing_config%/*}"
+: > "$existing_config"
+if admin_password_initialization_required "$TEST_ROOT/existing-volume-marker" "$existing_config"; then
+    fail 'existing userdir configuration without marker required bootstrap'
 fi
-pass 'existing volume without marker requires bootstrap'
+pass 'existing userdir configuration without marker skips bootstrap'
+
+reset_password_environment
+new_config="$TEST_ROOT/new-userdir/config/server.conf"
+if ! admin_password_initialization_required "$TEST_ROOT/new-userdir-marker" "$new_config"; then
+    fail 'new userdir without configuration skipped bootstrap'
+fi
+pass 'new userdir without configuration requires bootstrap'
 
 reset_password_environment
 GRIDVIS_INITIALIZE_ADMIN_PASSWORD=false
